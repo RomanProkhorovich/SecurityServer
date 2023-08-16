@@ -1,0 +1,17 @@
+spring:
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+  jpa:
+    hibernate:
+      ddl-auto: none
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:55555/practice_db
+    username: "roma"
+    password: "123"
+server:
+  port: 8081
+jwt:
+  lifetime : 30m
+  secret: 14u489ue983w99jmvut9843hgiosdiooijuioju2398u78oiuhfuihy88hidsosoososiojf9vm490ishiuvhnt4e89v9woihnio4v899092903ivnjiu4yhv895nnciuoi8rhn
