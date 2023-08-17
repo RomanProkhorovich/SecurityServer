@@ -4,6 +4,7 @@ import com.example.securityserver.dto.AuthDto;
 import com.example.securityserver.dto.RegDto;
 import com.example.securityserver.exception.DeletedUserException;
 import com.example.securityserver.exception.UserAlreadyExistException;
+import com.example.securityserver.exception.UserNotFoundException;
 import com.example.securityserver.model.Reader;
 import com.example.securityserver.repository.ReaderRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,31 @@ public class ReaderService implements UserDetailsService {
                 .password(passwordEncoder.encode(password))
                 .build();
         return save(reader);
+    }
+    public Reader update(Reader reader,PasswordEncoder passwordEncoder){
+        reader.setPassword(passwordEncoder.encode(reader.getPassword()));
+        var updated =readerRepository.findById(reader.getId())
+                .orElseThrow(()-> new UserNotFoundException(String.format("User with id: '%d' not found", reader.getId())));
+
+        if (!reader.getEmail().isBlank()){
+            updated.setEmail(reader.getEmail());
+        }
+
+        if (!reader.getFirstname().isBlank()){
+            updated.setFirstname(reader.getFirstname());
+        }
+
+        if (!reader.getLastname().isBlank()){
+            updated.setLastname(reader.getLastname());
+        }
+        if (reader.getSurname()!=null && !reader.getSurname().isBlank()){
+            updated.setSurname(reader.getSurname());
+        }
+
+        if (!reader.getPassword().isBlank()){
+            updated.setSurname(reader.getSurname());
+        }
+        return readerRepository.save(updated);
     }
     public AuthDto saveAndMap(RegDto regDto, PasswordEncoder passwordEncoder){
         Reader saved = save(regDto, passwordEncoder);

@@ -1,9 +1,10 @@
 package com.example.securityserver.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 
-@Data
+@Getter
 public class Token {
     private String token;
 
