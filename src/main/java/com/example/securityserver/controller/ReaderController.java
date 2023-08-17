@@ -24,11 +24,8 @@ public class ReaderController {
 
     @GetMapping
     public ResponseEntity<Response> getRoles(Principal principal){
-        var reader=readerService.loadUserByUsername(principal.getName());
-        var res=new Response(true,
-                reader.getUsername(),
-                reader.getAuthorities().stream().map(GrantedAuthority::getAuthority).findFirst().get());
-        return ResponseEntity.ok(res);
+
+        return ResponseEntity.ok(readerService.fromPrinciple(principal));
     }
     @PostMapping
     public ResponseEntity<Reader> create(@RequestBody Reader reader) {

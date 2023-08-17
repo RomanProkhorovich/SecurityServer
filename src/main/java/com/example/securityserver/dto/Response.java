@@ -1,9 +1,13 @@
 package com.example.securityserver.dto;
 
-import lombok.AllArgsConstructor;
+import com.example.securityserver.service.ReaderService;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.security.Principal;
 
 @Data
+
 public class Response {
     private boolean authenticated;
     private String username;
@@ -14,4 +18,6 @@ public class Response {
         this.username = username;
         this.role = role;
     }
+
+
 }

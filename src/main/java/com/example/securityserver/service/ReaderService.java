@@ -2,12 +2,14 @@ package com.example.securityserver.service;
 
 import com.example.securityserver.dto.AuthDto;
 import com.example.securityserver.dto.RegDto;
+import com.example.securityserver.dto.Response;
 import com.example.securityserver.exception.DeletedUserException;
 import com.example.securityserver.exception.UserAlreadyExistException;
 import com.example.securityserver.exception.UserNotFoundException;
 import com.example.securityserver.model.Reader;
 import com.example.securityserver.repository.ReaderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.Set;
 
 @Service
@@ -29,6 +32,7 @@ public class ReaderService implements UserDetailsService {
             throw new UserAlreadyExistException(
                     String.format("User with email: '%s' already exist", reader.getEmail()));
         }
+
         return readerRepository.save(reader);
     }
     public Reader save(RegDto regDto, PasswordEncoder passwordEncoder){
@@ -82,5 +86,14 @@ public class ReaderService implements UserDetailsService {
         return new User(email,
                 reader.getPassword(),
                 Set.of(new SimpleGrantedAuthority(reader.getRole().name())));
+    }
+
+
+    public Response fromPrinciple(Principal principal){
+        var reader=loadUserByUsername(principal.getName());
+        var res=new Response(true,
+                reader.getUsername(),
+                reader.getAuthorities().stream().map(GrantedAuthority::getAuthority).findFirst().get());
+        return res;
     }
 }
