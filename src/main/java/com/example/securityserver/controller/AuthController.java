@@ -28,18 +28,17 @@ public class AuthController {
     }
 
     @PostMapping
-            public ResponseEntity<String> generateToken(@RequestBody AuthDto dto) {
+    public ResponseEntity<Token> generateToken(@RequestBody AuthDto dto) {
         Token body = new Token(authUtil.auth(dto.getUsername(), dto.getPassword()));
-        return ResponseEntity.ok(body.getToken());
+        return ResponseEntity.ok(body);
     }
 
 
     @PostMapping("/registration")
     public ResponseEntity<AuthDto> doRegistration(@RequestBody RegDto regDto) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(readerService.saveAndMap(regDto,passwordEncoder));
+        return ResponseEntity.status(HttpStatus.CREATED).body(readerService.saveAndMap(regDto, passwordEncoder));
     }
-
 
 
 }
